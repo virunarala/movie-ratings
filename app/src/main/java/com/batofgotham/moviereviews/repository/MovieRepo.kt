@@ -2,15 +2,14 @@ package com.batofgotham.moviereviews.repository
 
 import android.util.Log
 import com.batofgotham.moviereviews.data.model.Movie
-import com.batofgotham.moviereviews.data.remote.movies.MoviesApiService
+import com.batofgotham.moviereviews.data.remote.movies.ApiService
 import javax.inject.Inject
 
-class MoviesRepository @Inject constructor(private val moviesApiService: MoviesApiService) {
+class MovieRepo @Inject constructor(private val apiService: ApiService) {
 
     suspend fun getMoviesFromNetwork(): List<Movie>{
-        val result = moviesApiService.getPopularMovies().results
+        val result = apiService.getPopularMovies().results
         Log.i("Repository",result.toString())
         return result
     }
-
 }

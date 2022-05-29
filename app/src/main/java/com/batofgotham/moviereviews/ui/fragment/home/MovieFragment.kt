@@ -6,12 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.batofgotham.moviereviews.R
-import com.batofgotham.moviereviews.data.remote.movies.MoviesApi
 import com.batofgotham.moviereviews.databinding.FragmentMovieBinding
-import com.batofgotham.moviereviews.repository.MoviesRepository
 import com.batofgotham.moviereviews.ui.adapter.MovieAdapter
 import com.batofgotham.moviereviews.ui.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint

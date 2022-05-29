@@ -7,8 +7,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.batofgotham.moviereviews.data.model.Movie
 import com.batofgotham.moviereviews.databinding.LayoutMovieItemBinding
+import com.bumptech.glide.Glide
 
-class MovieAdapter(): ListAdapter<Movie,MovieViewHolder>(DiffCallback) {
+private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200"
+
+class MovieAdapter : ListAdapter<Movie,MovieViewHolder>(DiffCallback) {
+
+    /**
+     * These variables are only being used for testing the image loading library.
+     * They are to be replaced with the data from cached Configuration object.
+     */
+
 
     override fun getItemCount(): Int {
         return currentList.size
@@ -38,8 +47,15 @@ class MovieAdapter(): ListAdapter<Movie,MovieViewHolder>(DiffCallback) {
 class MovieViewHolder(private val binding: LayoutMovieItemBinding): RecyclerView.ViewHolder(binding.root){
 
     fun bind(movie: Movie){
-        //(TODO) Use Glide to load images
-        binding.posterImageView.text = movie.posterPath
         binding.titleTextView.text = movie.originalTitle
+        //(TODO) Use Glide to load images
+        val imageView = binding.posterImageView
+        val context = binding.root.context
+
+        val posterUrl = IMAGE_BASE_URL + movie.posterPath
+
+        Glide.with(binding.root)
+            .load(posterUrl)
+            .into(imageView)
     }
 }
