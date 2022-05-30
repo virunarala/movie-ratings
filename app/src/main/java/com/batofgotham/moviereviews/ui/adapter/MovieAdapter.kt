@@ -48,9 +48,8 @@ class MovieViewHolder(private val binding: LayoutMovieItemBinding): RecyclerView
 
     fun bind(movie: Movie){
         binding.titleTextView.text = movie.originalTitle
-        //(TODO) Use Glide to load images
+
         val imageView = binding.posterImageView
-        val context = binding.root.context
 
         val posterUrl = IMAGE_BASE_URL + movie.posterPath
 

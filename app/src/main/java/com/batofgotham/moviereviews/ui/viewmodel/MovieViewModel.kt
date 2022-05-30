@@ -36,7 +36,7 @@ class MovieViewModel @Inject constructor(private val movieRepo: MovieRepo,privat
 
     private fun getMovies(){
         viewModelScope.launch {
-            _movies.value = movieRepo.getMoviesFromNetwork()
+            _movies.value = movieRepo.getMovies()
             Log.i(TAG,_movies.value.toString())
         }
     }
