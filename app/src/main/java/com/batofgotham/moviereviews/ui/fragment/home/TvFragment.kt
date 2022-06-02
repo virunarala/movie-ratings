@@ -38,7 +38,7 @@ class TvFragment : Fragment() {
 
         val recyclerView = binding.rvTvShows
         val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-        gridLayoutManager.spanCount = 2
+        gridLayoutManager.spanCount = 3
 
         val adapter = TvShowsAdapter()
         recyclerView.adapter = adapter
