@@ -15,13 +15,14 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import javax.inject.Singleton
 
 private const val BASE_URL = "https://api.themoviedb.org/3/"
 
 private const val API_KEY = "db75be3f6da59e6c54d0b9f568d19d16"
 
-private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply{
+private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
 }
 
@@ -50,17 +51,22 @@ interface ApiService {
 
     @GET("tv/top_rated?api_key=$API_KEY")
     suspend fun getTopRatedTvShows(): TvNetworkResponse
+
+    @GET("search/tv?api_key=$API_KEY")
+    suspend fun getSearchTvShows(
+        @Query("query") query: String
+    ): TvNetworkResponse
 }
 
 
 @InstallIn(SingletonComponent::class)
 @Module
-object Network{
+object Network {
 
     @Singleton
     @Provides
-    fun provideMoviesApi(): ApiService{
-        val apiService: ApiService by lazy{
+    fun provideMoviesApi(): ApiService {
+        val apiService: ApiService by lazy {
             retrofit.create(ApiService::class.java)
         }
         return apiService

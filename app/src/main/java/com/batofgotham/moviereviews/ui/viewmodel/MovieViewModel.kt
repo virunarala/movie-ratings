@@ -36,6 +36,10 @@ class MovieViewModel @Inject constructor(
     val apiConfig: LiveData<Configuration>
         get() = _apiConfig
 
+    private val _searchTvShows = MutableLiveData<List<TvShows>>()
+    val searchTvShows: LiveData<List<TvShows>>
+        get() = _searchTvShows
+
     init {
         getMovies()
         Log.i(TAG, "ViewModel getMovies() called")
@@ -63,6 +67,12 @@ class MovieViewModel @Inject constructor(
     private fun getApiConfig() {
         viewModelScope.launch {
             _apiConfig.value = configRepo.getApiConfig()
+        }
+    }
+
+    fun search(search: String) {
+        viewModelScope.launch {
+            _searchTvShows.value = tvShowsRepo.searchMovies(search)
         }
     }
 

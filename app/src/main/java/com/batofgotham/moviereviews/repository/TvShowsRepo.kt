@@ -13,4 +13,8 @@ class TvShowsRepo @Inject constructor(private val apiService: ApiService) {
         return result
     }
 
+    suspend fun searchMovies(search: String): List<TvShows> {
+        return apiService.getSearchTvShows(search).results
+    }
+
 }

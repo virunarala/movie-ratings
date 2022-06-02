@@ -2,7 +2,7 @@ package com.batofgotham.moviereviews.data.model
 
 data class TvShows(
     val backdrop_path: String? = null,
-    val first_air_date: String,
+    val first_air_date: String? = null,
     val genre_ids: List<Int>,
     val id: Int,
     val name: String,
