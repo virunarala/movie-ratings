@@ -11,7 +11,8 @@ import com.bumptech.glide.Glide
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200"
 
-class TvShowsAdapter : ListAdapter<TvShows, TvShowsViewHolder>(DiffCallback) {
+class TvShowsAdapter(private val listener: TvShowsViewHolder.OnClickListener) :
+    ListAdapter<TvShows, TvShowsViewHolder>(DiffCallback) {
 
     override fun getItemCount(): Int {
         return currentList.size
@@ -29,6 +30,9 @@ class TvShowsAdapter : ListAdapter<TvShows, TvShowsViewHolder>(DiffCallback) {
 
     override fun onBindViewHolder(holder: TvShowsViewHolder, position: Int) {
         val item = currentList[position]
+        holder.itemView.setOnClickListener {
+            listener.onClick(item)
+        }
         holder.bind(item)
     }
 
@@ -47,7 +51,6 @@ class TvShowsViewHolder(private val binding: LayoutTvShowsItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(tvShows: TvShows) {
         binding.titleTextView.text = tvShows.name
-        //(TODO) Use Glide to load images
         val imageView = binding.posterImageView
         val context = binding.root.context
 
@@ -57,4 +60,9 @@ class TvShowsViewHolder(private val binding: LayoutTvShowsItemBinding) :
             .load(posterUrl)
             .into(imageView)
     }
+
+    interface OnClickListener {
+        fun onClick(tvShows: TvShows)
+    }
+
 }

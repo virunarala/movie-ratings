@@ -7,14 +7,18 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import com.batofgotham.moviereviews.R
+import com.batofgotham.moviereviews.data.model.TvShows
 import com.batofgotham.moviereviews.databinding.FragmentTvBinding
 import com.batofgotham.moviereviews.ui.adapter.TvShowsAdapter
+import com.batofgotham.moviereviews.ui.adapter.TvShowsViewHolder
 import com.batofgotham.moviereviews.ui.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TvFragment : Fragment() {
+class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
 
     private var _binding: FragmentTvBinding? = null
 
@@ -23,13 +27,14 @@ class TvFragment : Fragment() {
 
     private val viewModel: MovieViewModel by viewModels()
 
+    private lateinit var viewReference: View
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentTvBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -40,10 +45,18 @@ class TvFragment : Fragment() {
         val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
         gridLayoutManager.spanCount = 3
 
-        val adapter = TvShowsAdapter()
+        val adapter = TvShowsAdapter(this)
         recyclerView.adapter = adapter
 
+        viewReference = view
         setupSearchView()
+
+        binding.fabFilter.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_homeFragment_to_choiceChipsFragment)
+        }
+
+
 
         viewModel.tvShows.observe(viewLifecycleOwner) {
             if (it != null)
@@ -77,6 +90,11 @@ class TvFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(tvShows: TvShows) {
+        Navigation.findNavController(viewReference)
+            .navigate(R.id.action_homeFragment_to_detailScreenFragment)
     }
 
 }
