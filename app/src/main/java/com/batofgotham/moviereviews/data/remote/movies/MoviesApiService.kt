@@ -50,11 +50,14 @@ interface ApiService {
     suspend fun getApiConfig(): Configuration
 
     @GET("tv/top_rated?api_key=$API_KEY")
-    suspend fun getTopRatedTvShows(): TvNetworkResponse
+    suspend fun getTopRatedTvShows(
+        @Query("page") page: Int
+    ): TvNetworkResponse
 
     @GET("search/tv?api_key=$API_KEY")
     suspend fun getSearchTvShows(
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("page") page: Int
     ): TvNetworkResponse
 }
 

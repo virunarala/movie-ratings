@@ -29,6 +29,8 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
 
     private lateinit var viewReference: View
 
+    private lateinit var mAdapter: TvShowsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,14 +43,10 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = binding.rvTvShows
-        val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-        gridLayoutManager.spanCount = 3
-
-        val adapter = TvShowsAdapter(this)
-        recyclerView.adapter = adapter
+        setUpRecyclerView()
 
         viewReference = view
+
         setupSearchView()
 
         binding.fabFilter.setOnClickListener {
@@ -56,20 +54,28 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
                 .navigate(R.id.action_homeFragment_to_choiceChipsFragment)
         }
 
-
-
         viewModel.tvShows.observe(viewLifecycleOwner) {
             if (it != null)
-                adapter.submitList(it)
+                mAdapter.submitData(lifecycle, it)
         }
 
         viewModel.searchTvShows.observe(viewLifecycleOwner) {
             if (it != null) {
-                adapter.submitList(it)
+                mAdapter.submitData(lifecycle, it)
             }
         }
 
 
+    }
+
+    private fun setUpRecyclerView() {
+        val recyclerView = binding.rvTvShows
+        val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
+        gridLayoutManager.spanCount = 3
+
+        mAdapter = TvShowsAdapter(this)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = mAdapter
     }
 
     private fun setupSearchView() {

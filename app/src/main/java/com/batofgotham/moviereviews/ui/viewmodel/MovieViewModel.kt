@@ -1,10 +1,9 @@
 package com.batofgotham.moviereviews.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.batofgotham.moviereviews.data.model.Configuration
 import com.batofgotham.moviereviews.data.model.Movie
 import com.batofgotham.moviereviews.data.model.TvShows
@@ -28,17 +27,23 @@ class MovieViewModel @Inject constructor(
     val movies: LiveData<List<Movie>>
         get() = _movies
 
-    private val _tvShows = MutableLiveData<List<TvShows>>()
-    val tvShows: LiveData<List<TvShows>>
-        get() = _tvShows
+//    private val _tvShows: LiveData<List<TvShows>>? = null
+//    val tvShows: LiveData<List<TvShows>>
+//        get() = _tvShows
+
+    lateinit var tvShows: LiveData<PagingData<TvShows>>
 
     private val _apiConfig = MutableLiveData<Configuration>()
     val apiConfig: LiveData<Configuration>
         get() = _apiConfig
 
-    private val _searchTvShows = MutableLiveData<List<TvShows>>()
-    val searchTvShows: LiveData<List<TvShows>>
-        get() = _searchTvShows
+    private val currentQuery = MutableLiveData("friends")
+
+    val searchTvShows = currentQuery.switchMap { queryString ->
+        tvShowsRepo.getTvShowsSearch(queryString).cachedIn(viewModelScope)
+    }
+//    val searchTvShows: LiveData<List<TvShows>>
+//        get() = _searchTvShows
 
     init {
         getMovies()
@@ -59,8 +64,9 @@ class MovieViewModel @Inject constructor(
 
     private fun getTvShows() {
         viewModelScope.launch {
-            _tvShows.value = tvShowsRepo.getTvShowsFromNetwork()
-            Log.i(TAG, _tvShows.value.toString())
+//            _tvShows.value = tvShowsRepo.getTvShowsFromNetwork()
+//            Log.i(TAG, _tvShows.value.toString())
+            tvShows = tvShowsRepo.getTvShowsFromNetwork().cachedIn(viewModelScope)
         }
     }
 
@@ -71,9 +77,7 @@ class MovieViewModel @Inject constructor(
     }
 
     fun search(search: String) {
-        viewModelScope.launch {
-            _searchTvShows.value = tvShowsRepo.searchMovies(search)
-        }
+        currentQuery.value = search
     }
 
 }
