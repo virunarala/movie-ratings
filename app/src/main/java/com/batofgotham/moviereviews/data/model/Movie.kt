@@ -11,37 +11,37 @@ data class Movie(
     @Json(name="poster_path")
     val posterPath: String? = null,
 
-    val adult: Boolean,
+    val adult: Boolean?,
 
-    val overview:String,
+    val overview:String?,
 
     @Json(name="release_date")
-    val releaseData:String,
+    val releaseDate:String?,
 
     @Json(name="genre_ids")
-    val genreIds: List<Int>,
+    val genreIds: List<Int>?,
 
     @PrimaryKey
     val id: Int,
 
     @Json(name="original_title")
-    val originalTitle: String,
+    val originalTitle: String?,
 
     @Json(name="original_language")
-    val originalLanguage: String,
+    val originalLanguage: String?,
 
-    val title: String,
+    val title: String?,
 
     @Json(name="backdrop_path")
     val backdropPath: String? = null,
 
-    val popularity: Double,
+    val popularity: Double?,
 
     @Json(name="vote_count")
-    val voteCount: Int,
+    val voteCount: Int?,
 
-    val video: Boolean,
+    val video: Boolean?,
 
     @Json(name="vote_average")
-    val voteAverage: Double
+    val voteAverage: Double?
 )
