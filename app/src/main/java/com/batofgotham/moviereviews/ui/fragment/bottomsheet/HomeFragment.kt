@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.batofgotham.moviereviews.databinding.FragmentHomeBinding
 import com.example.moviesapp.ui.adapter.ViewPagerAdapter
+
+import com.google.android.material.tabs.TabLayoutMediator
+
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val homeFragmentTitle = arrayOf("Movie", "Tv Shows")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,10 +26,16 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
-        val pagerAdapter = ViewPagerAdapter(childFragmentManager)
-        binding.viewPager.adapter = pagerAdapter
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
+        setUpViewPager()
         return view
+    }
+
+    private fun setUpViewPager() {
+        val pagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        binding.viewPager.adapter = pagerAdapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = homeFragmentTitle[position]
+        }.attach()
     }
 
     override fun onDestroyView() {
