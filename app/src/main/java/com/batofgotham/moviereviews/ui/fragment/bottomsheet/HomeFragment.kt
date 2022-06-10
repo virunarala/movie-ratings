@@ -7,8 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.batofgotham.moviereviews.databinding.FragmentHomeBinding
 import com.example.moviesapp.ui.adapter.ViewPagerAdapter
+
 import com.google.android.material.tabs.TabLayoutMediator
 
+import dagger.hilt.android.AndroidEntryPoint
+
+
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
