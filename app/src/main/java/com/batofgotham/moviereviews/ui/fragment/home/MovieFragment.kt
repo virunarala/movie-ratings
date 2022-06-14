@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.batofgotham.moviereviews.databinding.FragmentMovieBinding
 import com.batofgotham.moviereviews.ui.adapter.MovieAdapter
 import com.batofgotham.moviereviews.ui.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MovieFragment : Fragment() {
@@ -43,9 +47,10 @@ class MovieFragment : Fragment() {
         val adapter = MovieAdapter()
         recyclerView.adapter = adapter
 
-        viewModel.movies.observe(viewLifecycleOwner){
-            if(it!=null)
-                adapter.submitList(it)
+        lifecycleScope.launch {
+            viewModel.getMovies().asFlow().collectLatest {
+                adapter.submitData(it)
+            }
         }
 
     }

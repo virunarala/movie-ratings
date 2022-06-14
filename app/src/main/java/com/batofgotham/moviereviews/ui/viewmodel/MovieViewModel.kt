@@ -27,6 +27,10 @@ class MovieViewModel @Inject constructor(
     val movies: LiveData<List<Movie>>
         get() = _movies
 
+//    private val _movies = MutableLiveData<List<Movie>>()
+//    val movies: LiveData<List<Movie>>
+//        get() = _movies
+
 //    private val _tvShows: LiveData<List<TvShows>>? = null
 //    val tvShows: LiveData<List<TvShows>>
 //        get() = _tvShows
@@ -55,11 +59,15 @@ class MovieViewModel @Inject constructor(
         Log.i(TAG, "ViewModel getTvShows() called")
     }
 
+
     private fun getMovies() {
         viewModelScope.launch {
             _movies.value = movieRepo.getMoviesFromNetwork()
             Log.i(TAG, _movies.value.toString())
         }
+
+    fun getMovies(): LiveData<PagingData<Movie>>{
+        return movieRepo.loadMovies().cachedIn(viewModelScope)
     }
 
     private fun getTvShows() {

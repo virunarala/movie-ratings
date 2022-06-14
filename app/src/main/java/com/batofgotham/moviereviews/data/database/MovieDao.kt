@@ -10,9 +10,23 @@ import com.batofgotham.moviereviews.utils.Constants
 @Dao
 abstract interface MovieDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertMovie(movie: Movie)
+    /**
+     * Inserts a movie into database and returns the rowId of the inserted movie
+     *
+     * This method is redundant. Can be removed if no usage is found.
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovie(movie: Movie): Long
 
+    /**
+     * Inserts a list of movies into database and returns a list of rowIds of the inserted movies
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovies(movies: List<Movie>): List<Long>
+
+    /**
+     * Returns a list of all the movies in the database
+     */
     @Query("SELECT * FROM ${Constants.TABLE_NAME_MOVIE}")
     suspend fun getAllMovies(): List<Movie>
 }

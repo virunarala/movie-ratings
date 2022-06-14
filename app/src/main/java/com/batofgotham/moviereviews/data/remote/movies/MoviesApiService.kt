@@ -1,8 +1,10 @@
 package com.batofgotham.moviereviews.data.remote.movies
 
 import com.batofgotham.moviereviews.data.model.Configuration
+
 import com.batofgotham.moviereviews.data.model.MoviesNetworkResponse
 import com.batofgotham.moviereviews.data.model.TvNetworkResponse
+
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -15,6 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import javax.inject.Singleton
 
@@ -44,7 +47,7 @@ private val retrofit = Retrofit.Builder()
 interface ApiService {
 
     @GET("movie/popular?api_key=$API_KEY")
-    suspend fun getPopularMovies(): MoviesNetworkResponse
+    suspend fun getMoviesApiResponse(@Query("page") page: Int): MovieNetworkResponse
 
     @GET("/configuration?api_key=$API_KEY")
     suspend fun getApiConfig(): Configuration
