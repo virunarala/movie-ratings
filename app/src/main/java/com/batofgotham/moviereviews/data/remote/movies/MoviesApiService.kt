@@ -1,7 +1,10 @@
 package com.batofgotham.moviereviews.data.remote.movies
 
 import com.batofgotham.moviereviews.data.model.Configuration
-import com.batofgotham.moviereviews.data.model.MovieNetworkResponse
+
+import com.batofgotham.moviereviews.data.model.MoviesNetworkResponse
+import com.batofgotham.moviereviews.data.model.TvNetworkResponse
+
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -22,7 +25,7 @@ private const val BASE_URL = "https://api.themoviedb.org/3/"
 
 private const val API_KEY = "db75be3f6da59e6c54d0b9f568d19d16"
 
-private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply{
+private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
 }
 
@@ -48,17 +51,28 @@ interface ApiService {
 
     @GET("/configuration?api_key=$API_KEY")
     suspend fun getApiConfig(): Configuration
+
+    @GET("tv/top_rated?api_key=$API_KEY")
+    suspend fun getTopRatedTvShows(
+        @Query("page") page: Int
+    ): TvNetworkResponse
+
+    @GET("search/tv?api_key=$API_KEY")
+    suspend fun getSearchTvShows(
+        @Query("query") query: String,
+        @Query("page") page: Int
+    ): TvNetworkResponse
 }
 
 
 @InstallIn(SingletonComponent::class)
 @Module
-object Network{
+object Network {
 
     @Singleton
     @Provides
-    fun provideMoviesApi(): ApiService{
-        val apiService: ApiService by lazy{
+    fun provideMoviesApi(): ApiService {
+        val apiService: ApiService by lazy {
             retrofit.create(ApiService::class.java)
         }
         return apiService

@@ -13,4 +13,16 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="mcv_poster">
+        <item name="android:topLeftRadius">28dp</item>
+        <item name="android:topRightRadius">28dp</item>
+    </style>
+
+    <style name="choice_chips_style" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:checkable">true</item>
+        <item name="chipIconVisible">false</item>
+        <item name="closeIconVisible">false</item>
+    </style>
+
 </resources>
