@@ -1,4 +1,4 @@
-package com.batofgotham.moviereviews.ui.fragment.home
+package com.batofgotham.moviereviews.ui.tvshow
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,7 @@ import com.batofgotham.moviereviews.data.model.TvShows
 import com.batofgotham.moviereviews.databinding.FragmentTvBinding
 import com.batofgotham.moviereviews.ui.adapter.TvShowsAdapter
 import com.batofgotham.moviereviews.ui.adapter.TvShowsViewHolder
-import com.batofgotham.moviereviews.ui.viewmodel.MovieViewModel
+import com.batofgotham.moviereviews.ui.movie.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,17 +25,17 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
     private val binding: FragmentTvBinding
         get() = _binding!!
 
-    private val viewModel: MovieViewModel by viewModels()
+    private val viewModel: TvViewModel by viewModels()
 
     private lateinit var viewReference: View
 
-    private lateinit var mAdapter: TvShowsAdapter
+    private lateinit var adapter: TvShowsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         _binding = FragmentTvBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -56,12 +56,12 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
 
         viewModel.tvShows.observe(viewLifecycleOwner) {
             if (it != null)
-                mAdapter.submitData(lifecycle, it)
+                adapter.submitData(lifecycle, it)
         }
 
         viewModel.searchTvShows.observe(viewLifecycleOwner) {
             if (it != null) {
-                mAdapter.submitData(lifecycle, it)
+                adapter.submitData(lifecycle, it)
             }
         }
 
@@ -73,9 +73,9 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
         val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
         gridLayoutManager.spanCount = 3
 
-        mAdapter = TvShowsAdapter(this)
+        adapter = TvShowsAdapter(this)
         recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = mAdapter
+        recyclerView.adapter = adapter
     }
 
     private fun setupSearchView() {

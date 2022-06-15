@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.batofgotham.moviereviews.ui.fragment.bottomsheet.HomeFragment"
+        android:name="com.batofgotham.moviereviews.ui.bottomsheetnav.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
@@ -19,32 +19,32 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.batofgotham.moviereviews.ui.fragment.bottomsheet.FavoriteFragment"
+        android:name="com.batofgotham.moviereviews.ui.bottomsheetnav.FavoriteFragment"
         android:label="Favorite"
         tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.batofgotham.moviereviews.ui.fragment.bottomsheet.SettingsFragment"
+        android:name="com.batofgotham.moviereviews.ui.bottomsheetnav.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
     <dialog
         android:id="@+id/choiceChipsFragment"
-        android:name="com.batofgotham.moviereviews.ui.fragment.choice_chips.ChoiceChipsFragment"
+        android:name="com.batofgotham.moviereviews.ui.ChoiceChipsFragment"
         android:label="fragment_choice_chips"
         tools:layout="@layout/fragment_choice_chips" />
     <fragment
         android:id="@+id/movieFragment"
-        android:name="com.batofgotham.moviereviews.ui.fragment.home.MovieFragment"
+        android:name="com.batofgotham.moviereviews.ui.movie.MovieFragment"
         android:label="fragment_movie"
         tools:layout="@layout/fragment_movie" />
     <fragment
         android:id="@+id/tvFragment"
-        android:name="com.batofgotham.moviereviews.ui.fragment.home.TvFragment"
+        android:name="com.batofgotham.moviereviews.ui.tvshow.TvFragment"
         android:label="fragment_tv"
         tools:layout="@layout/fragment_tv" />
     <fragment
         android:id="@+id/detailScreenFragment"
-        android:name="com.batofgotham.moviereviews.ui.fragment.detail.DetailScreenFragment"
+        android:name="com.batofgotham.moviereviews.ui.detail.DetailScreenFragment"
         android:label="fragment_detail_screen"
         tools:layout="@layout/fragment_detail_screen" />
 </navigation>

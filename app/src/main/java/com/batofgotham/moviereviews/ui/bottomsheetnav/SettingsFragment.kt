@@ -1,4 +1,4 @@
-package com.batofgotham.moviereviews.ui.fragment.bottomsheet
+package com.batofgotham.moviereviews.ui.bottomsheetnav
 
 import android.os.Bundle
 import android.view.LayoutInflater

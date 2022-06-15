@@ -1,4 +1,4 @@
-package com.batofgotham.moviereviews.ui.fragment.choice_chips
+package com.batofgotham.moviereviews.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,11 +1,11 @@
-package com.example.moviesapp.ui.adapter
+package com.batofgotham.moviereviews.ui
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.batofgotham.moviereviews.ui.fragment.home.MovieFragment
-import com.batofgotham.moviereviews.ui.fragment.home.TvFragment
+import com.batofgotham.moviereviews.ui.movie.MovieFragment
+import com.batofgotham.moviereviews.ui.tvshow.TvFragment
 
 //view Pager Adapter to do swipe fragments in main activity
 

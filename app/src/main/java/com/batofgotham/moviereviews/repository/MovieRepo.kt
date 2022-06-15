@@ -9,7 +9,7 @@ import androidx.paging.liveData
 import com.batofgotham.moviereviews.data.database.MovieDao
 import com.batofgotham.moviereviews.data.model.Movie
 import com.batofgotham.moviereviews.data.model.MovieNetworkResponse
-import com.batofgotham.moviereviews.data.paging.movie.MoviePagingSource
+import com.batofgotham.moviereviews.data.paging.MoviePagingSource
 import com.batofgotham.moviereviews.data.remote.movies.ApiService
 import javax.inject.Inject
 

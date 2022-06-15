@@ -1,4 +1,4 @@
-package com.batofgotham.moviereviews.data.paging.movie
+package com.batofgotham.moviereviews.data.paging
 
 import android.util.Log
 import androidx.paging.PagingSource
@@ -7,7 +7,6 @@ import com.batofgotham.moviereviews.data.model.Movie
 import com.batofgotham.moviereviews.repository.MovieRepo
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
 

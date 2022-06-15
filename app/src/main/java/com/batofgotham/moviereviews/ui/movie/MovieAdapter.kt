@@ -49,6 +49,7 @@ class MovieViewHolder(private val binding: LayoutMovieItemBinding): RecyclerView
 
         val posterUrl = IMAGE_BASE_URL + movie?.posterPath
 
+        //(TODO) Add a placeholder image for when the poster is not available and to show while loading a image
         Glide.with(binding.root)
             .load(posterUrl)
             .into(imageView)

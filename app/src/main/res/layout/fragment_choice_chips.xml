@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_radius_32"
     android:orientation="vertical"
-    tools:context=".ui.fragment.choice_chips.ChoiceChipsFragment">
+    tools:context=".ui.ChoiceChipsFragment">
 
     <TextView
         android:layout_width="wrap_content"

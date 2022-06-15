@@ -1,4 +1,4 @@
-package com.batofgotham.moviereviews.ui.fragment.home
+package com.batofgotham.moviereviews.ui.movie
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.batofgotham.moviereviews.databinding.FragmentMovieBinding
 import com.batofgotham.moviereviews.ui.adapter.MovieAdapter
-import com.batofgotham.moviereviews.ui.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

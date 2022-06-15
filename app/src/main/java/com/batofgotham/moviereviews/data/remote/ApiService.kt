@@ -2,7 +2,7 @@ package com.batofgotham.moviereviews.data.remote.movies
 
 import com.batofgotham.moviereviews.data.model.Configuration
 
-import com.batofgotham.moviereviews.data.model.MoviesNetworkResponse
+import com.batofgotham.moviereviews.data.model.MovieNetworkResponse
 import com.batofgotham.moviereviews.data.model.TvNetworkResponse
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -71,7 +71,7 @@ object Network {
 
     @Singleton
     @Provides
-    fun provideMoviesApi(): ApiService {
+    fun providesApiService(): ApiService {
         val apiService: ApiService by lazy {
             retrofit.create(ApiService::class.java)
         }

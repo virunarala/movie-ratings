@@ -1,4 +1,4 @@
-package com.batofgotham.moviereviews.ui.activity
+package com.batofgotham.moviereviews.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

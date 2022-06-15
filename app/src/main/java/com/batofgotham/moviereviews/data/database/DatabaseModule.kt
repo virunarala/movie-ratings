@@ -1,9 +1,7 @@
-package com.batofgotham.moviereviews.di
+package com.batofgotham.moviereviews.data.database
 
 import android.content.Context
 import androidx.room.Room
-import com.batofgotham.moviereviews.data.database.MovieDao
-import com.batofgotham.moviereviews.data.database.MovieDatabase
 import com.batofgotham.moviereviews.utils.Constants
 import dagger.Module
 import dagger.Provides
