@@ -3,7 +3,7 @@ package com.batofgotham.moviereviews.ui.tvshow
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.batofgotham.moviereviews.data.model.TvShows
+import com.batofgotham.moviereviews.data.model.TvShow
 import com.batofgotham.moviereviews.repository.TvShowsRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ class TvViewModel @Inject constructor(
     private val tvShowsRepo: TvShowsRepo
 ): ViewModel() {
 
-    lateinit var tvShows: LiveData<PagingData<TvShows>>
+    lateinit var tvShow: LiveData<PagingData<TvShow>>
 
     private val currentQuery = MutableLiveData("friends")
 
@@ -30,7 +30,7 @@ class TvViewModel @Inject constructor(
         viewModelScope.launch {
 //            _tvShows.value = tvShowsRepo.getTvShowsFromNetwork()
 //            Log.i(TAG, _tvShows.value.toString())
-            tvShows = tvShowsRepo.getTvShowsFromNetwork().cachedIn(viewModelScope)
+            tvShow = tvShowsRepo.getTvShowsFromNetwork().cachedIn(viewModelScope)
         }
     }
 

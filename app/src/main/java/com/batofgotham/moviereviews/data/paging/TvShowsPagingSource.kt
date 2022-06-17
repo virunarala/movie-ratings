@@ -2,13 +2,13 @@ package com.batofgotham.moviereviews.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.batofgotham.moviereviews.data.model.TvShows
+import com.batofgotham.moviereviews.data.model.TvShow
 import com.batofgotham.moviereviews.data.remote.movies.ApiService
 
 class TvShowsPagingSource(
     private val apiService: ApiService
-) : PagingSource<Int, TvShows>() {
-    override fun getRefreshKey(state: PagingState<Int, TvShows>): Int? {
+) : PagingSource<Int, TvShow>() {
+    override fun getRefreshKey(state: PagingState<Int, TvShow>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
@@ -16,7 +16,7 @@ class TvShowsPagingSource(
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShows> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShow> {
         return try {
             val position = params.key ?: 1
             val response = apiService.getTopRatedTvShows(position)

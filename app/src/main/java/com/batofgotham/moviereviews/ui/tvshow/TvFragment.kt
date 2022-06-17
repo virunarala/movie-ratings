@@ -10,11 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.batofgotham.moviereviews.R
-import com.batofgotham.moviereviews.data.model.TvShows
+import com.batofgotham.moviereviews.data.model.TvShow
 import com.batofgotham.moviereviews.databinding.FragmentTvBinding
 import com.batofgotham.moviereviews.ui.adapter.TvShowsAdapter
 import com.batofgotham.moviereviews.ui.adapter.TvShowsViewHolder
-import com.batofgotham.moviereviews.ui.movie.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,7 +53,7 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
                 .navigate(R.id.action_homeFragment_to_choiceChipsFragment)
         }
 
-        viewModel.tvShows.observe(viewLifecycleOwner) {
+        viewModel.tvShow.observe(viewLifecycleOwner) {
             if (it != null)
                 adapter.submitData(lifecycle, it)
         }
@@ -98,7 +97,7 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
         _binding = null
     }
 
-    override fun onClick(tvShows: TvShows) {
+    override fun onClick(tvShow: TvShow) {
         Navigation.findNavController(viewReference)
             .navigate(R.id.action_homeFragment_to_detailScreenFragment)
     }

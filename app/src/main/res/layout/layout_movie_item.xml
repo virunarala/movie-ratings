@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/movie_container_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,7 +10,8 @@
     <ImageView
         android:id="@+id/poster_image_view"
         android:layout_width="130dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/movie_poster_content_desc" />
 
     <TextView
         android:id="@+id/title_text_view"
@@ -17,6 +20,6 @@
         android:layout_marginTop="4dp"
         android:textStyle="bold"
         android:gravity="center"
-        tools:text="Doctor Strange: Mutliverse of Madness"/>
+        tools:text="Doctor Strange: Multiverse of Madness"/>
 
 </LinearLayout>

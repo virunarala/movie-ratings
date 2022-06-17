@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.batofgotham.moviereviews.data.model.Movie
 import com.batofgotham.moviereviews.databinding.LayoutMovieItemBinding
+import com.batofgotham.moviereviews.utils.BottomDialogInterface
 import com.bumptech.glide.Glide
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200"
 
-class MovieAdapter : PagingDataAdapter<Movie,MovieViewHolder>(DiffCallback) {
+class MovieAdapter(private val bottomDialogInterface: BottomDialogInterface) : PagingDataAdapter<Movie,MovieViewHolder>(DiffCallback) {
 
     /**
      * These variables are only being used for testing the image loading library.
@@ -20,7 +21,7 @@ class MovieAdapter : PagingDataAdapter<Movie,MovieViewHolder>(DiffCallback) {
      */
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        return MovieViewHolder(LayoutMovieItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return MovieViewHolder(LayoutMovieItemBinding.inflate(LayoutInflater.from(parent.context),parent,false),bottomDialogInterface)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
@@ -40,9 +41,14 @@ class MovieAdapter : PagingDataAdapter<Movie,MovieViewHolder>(DiffCallback) {
 }
 
 
-class MovieViewHolder(private val binding: LayoutMovieItemBinding): RecyclerView.ViewHolder(binding.root){
+class MovieViewHolder(private val binding: LayoutMovieItemBinding, private val bottomDialogInterface: BottomDialogInterface): RecyclerView.ViewHolder(binding.root){
 
     fun bind(movie: Movie?){
+
+        binding.movieContainerView.setOnClickListener {
+            bottomDialogInterface.send(movie)
+        }
+
         binding.titleTextView.text = movie?.originalTitle
 
         val imageView = binding.posterImageView
