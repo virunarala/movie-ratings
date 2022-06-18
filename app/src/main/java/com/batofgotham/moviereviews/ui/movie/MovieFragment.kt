@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asFlow
@@ -13,15 +12,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.batofgotham.moviereviews.R
 import com.batofgotham.moviereviews.data.model.Movie
-import com.batofgotham.moviereviews.databinding.FragmentDetailScreenBinding
 import com.batofgotham.moviereviews.databinding.FragmentMovieBinding
 import com.batofgotham.moviereviews.ui.adapter.MovieAdapter
-import com.batofgotham.moviereviews.ui.detail.DetailScreenFragment
 import com.batofgotham.moviereviews.utils.BottomDialogInterface
+import com.batofgotham.moviereviews.utils.Utils
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200"
 
 @AndroidEntryPoint
 class MovieFragment : Fragment(), BottomDialogInterface {
@@ -32,6 +33,9 @@ class MovieFragment : Fragment(), BottomDialogInterface {
 
     private val binding: FragmentMovieBinding
         get() = _binding!!
+
+    private lateinit var detailBottomSheet: ViewGroup
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ViewGroup>
 
     private val viewModel: MovieViewModel by viewModels()
 
@@ -50,6 +54,7 @@ class MovieFragment : Fragment(), BottomDialogInterface {
 
         setupDetailBottomSheet()
 
+
         val recyclerView = binding.moviesRecyclerView
         val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
         gridLayoutManager.spanCount = 3
@@ -62,36 +67,24 @@ class MovieFragment : Fragment(), BottomDialogInterface {
                 adapter.submitData(it)
             }
         }
-
-
-
     }
 
     private fun setupDetailBottomSheet(){
 
-        if(activity==null)
-            Log.i(TAG,"Activity is null")
+        detailBottomSheet = binding.detailBottomSheetContainer
 
-        val detailFragment = binding.detailBottomSheetContainer
-
-//        binding.titleTextView.text = "Doctor Strange: Multiverse of Madness"
-//        binding.posterImageView.setImageResource(R.drawable.ic_launcher_background)
-//        binding.releaseYearTextView.text = "2022"
-
-        val bottomSheetBehavior = BottomSheetBehavior.from(detailFragment)
+        bottomSheetBehavior = BottomSheetBehavior.from(detailBottomSheet)
 
         Log.i(TAG,bottomSheetBehavior.state.toString())
 
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+
+        hideBottomSheet()
     }
 
     private val bottomSheetCallback = object: BottomSheetBehavior.BottomSheetCallback(){
         override fun onStateChanged(bottomSheet: View, newState: Int) {
             Log.i(TAG,newState.toString())
-            when(newState){
-                BottomSheetBehavior.STATE_EXPANDED -> binding.overviewTextView.visibility = View.VISIBLE
-                BottomSheetBehavior.STATE_COLLAPSED -> binding.overviewTextView.visibility = View.GONE
-            }
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
@@ -99,7 +92,16 @@ class MovieFragment : Fragment(), BottomDialogInterface {
         }
     }
 
+    private fun showBottomSheet(){
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    private fun hideBottomSheet(){
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
     override fun send(movie: Movie?) {
+        bottomSheetBehavior.state=BottomSheetBehavior.STATE_COLLAPSED
         loadBottomDialog(movie)
     }
 
@@ -107,9 +109,15 @@ class MovieFragment : Fragment(), BottomDialogInterface {
         movie?.apply {
             binding.titleTextView.text = title
             binding.posterImageView.setImageResource(R.drawable.ic_launcher_background)
-            binding.releaseYearTextView.text = releaseDate
+            binding.releaseYearTextView.text = Utils.getYear(Utils.getDate(releaseDate)).toString()
             binding.overviewTextView.text = overview
         }
+
+        val posterUrl = IMAGE_BASE_URL + movie?.posterPath
+
+        Glide.with(requireContext())
+            .load(posterUrl)
+            .into(binding.posterImageView)
     }
 
 

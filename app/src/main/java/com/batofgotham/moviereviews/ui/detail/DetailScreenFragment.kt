@@ -1,5 +1,6 @@
 package com.batofgotham.moviereviews.ui.detail
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +15,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class DetailScreenFragment : BottomSheetDialogFragment() {
 
-    private val TAG = this.javaClass.simpleName
+    companion object{
+        val TAG = "DetailScreenFragment"
+    }
 
     private lateinit var binding: FragmentDetailScreenBinding
 
@@ -34,10 +37,11 @@ class DetailScreenFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.detailBottomSheetContainer)
-
-        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+//        val bottomSheetBehavior = BottomSheetBehavior.from(binding.detailBottomSheetContainer)
+//
+//        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
     }
+
 
     private val bottomSheetCallback = object: BottomSheetBehavior.BottomSheetCallback(){
         override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -45,7 +49,7 @@ class DetailScreenFragment : BottomSheetDialogFragment() {
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            TODO("Not yet implemented")
+            Log.i(TAG,"Sliding...")
         }
     }
 
