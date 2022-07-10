@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:behavior_peekHeight="170dp"
-    app:backgroundTint="@color/bottom_sheet_bg_light"
+    app:backgroundTint="@color/bottom_sheet_bg"
     app:behavior_draggable="true"
     app:behavior_hideable="true"
     tools:context=".ui.detail.DetailScreenFragment">

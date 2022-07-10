@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.batofgotham.moviereviews.data.model.TvShow
 import com.batofgotham.moviereviews.data.remote.movies.ApiService
 
-class TvShowsSearchPagingSource(
+class TvShowSearchPagingSource(
     private val apiService: ApiService,
     private val search: String
 ) : PagingSource<Int, TvShow>() {

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.batofgotham.moviereviews.R
 import com.batofgotham.moviereviews.data.model.Movie
 import com.batofgotham.moviereviews.databinding.FragmentMovieBinding
-import com.batofgotham.moviereviews.ui.adapter.MovieAdapter
 import com.batofgotham.moviereviews.utils.BottomDialogInterface
 import com.batofgotham.moviereviews.utils.Utils
 import com.bumptech.glide.Glide
@@ -100,7 +99,7 @@ class MovieFragment : Fragment(), BottomDialogInterface {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    override fun send(movie: Movie?) {
+    override fun onMovieSelected(movie: Movie?) {
         bottomSheetBehavior.state=BottomSheetBehavior.STATE_COLLAPSED
         loadBottomDialog(movie)
     }
@@ -111,6 +110,7 @@ class MovieFragment : Fragment(), BottomDialogInterface {
             binding.posterImageView.setImageResource(R.drawable.ic_launcher_background)
             binding.releaseYearTextView.text = Utils.getYear(Utils.getDate(releaseDate)).toString()
             binding.overviewTextView.text = overview
+            binding.ratingTextView.text = voteAverage.toString()
         }
 
         val posterUrl = IMAGE_BASE_URL + movie?.posterPath

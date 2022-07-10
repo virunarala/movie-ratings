@@ -1,10 +1,9 @@
-package com.batofgotham.moviereviews.ui.adapter
+package com.batofgotham.moviereviews.ui.movie
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.batofgotham.moviereviews.data.model.Movie
 import com.batofgotham.moviereviews.databinding.LayoutMovieItemBinding
@@ -13,7 +12,9 @@ import com.bumptech.glide.Glide
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200"
 
-class MovieAdapter(private val bottomDialogInterface: BottomDialogInterface) : PagingDataAdapter<Movie,MovieViewHolder>(DiffCallback) {
+class MovieAdapter(private val bottomDialogInterface: BottomDialogInterface) : PagingDataAdapter<Movie, MovieViewHolder>(
+    DiffCallback
+) {
 
     /**
      * These variables are only being used for testing the image loading library.
@@ -46,7 +47,7 @@ class MovieViewHolder(private val binding: LayoutMovieItemBinding, private val b
     fun bind(movie: Movie?){
 
         binding.movieContainerView.setOnClickListener {
-            bottomDialogInterface.send(movie)
+            bottomDialogInterface.onMovieSelected(movie)
         }
 
         binding.titleTextView.text = movie?.originalTitle

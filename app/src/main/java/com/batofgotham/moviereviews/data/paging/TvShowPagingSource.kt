@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.batofgotham.moviereviews.data.model.TvShow
 import com.batofgotham.moviereviews.data.remote.movies.ApiService
 
-class TvShowsPagingSource(
+class TvShowPagingSource(
     private val apiService: ApiService
 ) : PagingSource<Int, TvShow>() {
     override fun getRefreshKey(state: PagingState<Int, TvShow>): Int? {
