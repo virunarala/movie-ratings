@@ -1,6 +1,7 @@
 package com.batofgotham.moviereviews.ui.tvshow
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +14,16 @@ import com.batofgotham.moviereviews.R
 import com.batofgotham.moviereviews.data.model.TvShow
 import com.batofgotham.moviereviews.databinding.FragmentTvBinding
 import com.batofgotham.moviereviews.ui.adapter.TvShowsAdapter
-import com.batofgotham.moviereviews.ui.adapter.TvShowsViewHolder
+import com.batofgotham.moviereviews.utils.BottomDialogInterfaceTv
+import com.batofgotham.moviereviews.utils.Utils
+import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200"
+
 @AndroidEntryPoint
-class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
+class TvFragment : Fragment(), BottomDialogInterfaceTv {
 
     private var _binding: FragmentTvBinding? = null
 
@@ -29,6 +35,11 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
     private lateinit var viewReference: View
 
     private lateinit var adapter: TvShowsAdapter
+
+    private lateinit var detailBottomSheet: ViewGroup
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ViewGroup>
+
+    private val TAG = this.javaClass.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,16 +53,13 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupDetailBottomSheet()
+
         setUpRecyclerView()
 
         viewReference = view
 
         setupSearchView()
-
-        binding.fabFilter.setOnClickListener {
-            Navigation.findNavController(view)
-                .navigate(R.id.action_homeFragment_to_choiceChipsFragment)
-        }
 
         viewModel.tvShow.observe(viewLifecycleOwner) {
             if (it != null)
@@ -92,14 +100,65 @@ class TvFragment : Fragment(), TvShowsViewHolder.OnClickListener {
         })
     }
 
+    private fun setupDetailBottomSheet() {
+
+        detailBottomSheet = binding.detailBottomSheetContainer
+
+        bottomSheetBehavior = BottomSheetBehavior.from(detailBottomSheet)
+
+        Log.i(TAG, bottomSheetBehavior.state.toString())
+
+        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+
+        hideBottomSheet()
+    }
+
+    private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            Log.i(TAG, newState.toString())
+        }
+
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            Log.i(TAG, "Sliding...")
+        }
+    }
+
+    private fun showBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    private fun hideBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    override fun send(tvShow: TvShow?) {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        loadBottomDialog(tvShow)
+    }
+
+    private fun loadBottomDialog(tvShow: TvShow?) {
+        tvShow?.apply {
+            binding.titleTextView.text = name
+            binding.posterImageView.setImageResource(R.drawable.ic_launcher_background)
+            binding.releaseYearTextView.text =
+                Utils.getYear(Utils.getDate(first_air_date)).toString()
+            binding.overviewTextView.text = overview
+            binding.ivOpen.setOnClickListener {
+                Navigation.findNavController(viewReference)
+                    .navigate(R.id.action_homeFragment_to_detailScreenFragment)
+            }
+        }
+
+        val posterUrl = IMAGE_BASE_URL + tvShow?.poster_path
+
+        Glide.with(requireContext())
+            .load(posterUrl)
+            .into(binding.posterImageView)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onClick(tvShow: TvShow) {
-        Navigation.findNavController(viewReference)
-            .navigate(R.id.action_homeFragment_to_detailScreenFragment)
     }
 
 }

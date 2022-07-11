@@ -12,6 +12,15 @@
         <entry key="..\:/Users/viru/AndroidStudioProjects/MovieReviews/app/src/main/res/layout/fragment_tv.xml" value="0.259375" />
         <entry key="..\:/Users/viru/AndroidStudioProjects/MovieReviews/app/src/main/res/layout/layout_movie_item.xml" value="0.264" />
         <entry key="..\:/Users/viru/AndroidStudioProjects/MovieReviews/app/src/main/res/layout/layout_tv_shows_item.xml" value="0.23278985507246377" />
+        <entry key="..\:/android/movie/app/src/main/res/drawable/bottom_sheet_radius_32.xml" value="0.1615" />
+        <entry key="..\:/android/movie/app/src/main/res/drawable/ic_open.xml" value="0.1615" />
+        <entry key="..\:/android/movie/app/src/main/res/drawable/ic_share.xml" value="0.1615" />
+        <entry key="..\:/android/movie/app/src/main/res/layout/fragment_detail_screen.xml" value="0.2" />
+        <entry key="..\:/android/movie/app/src/main/res/layout/fragment_movie.xml" value="0.22592592592592592" />
+        <entry key="..\:/android/movie/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
+        <entry key="..\:/android/movie/app/src/main/res/layout/fragment_tv.xml" value="0.25" />
+        <entry key="..\:/android/movie/app/src/main/res/layout/layout_movie_item.xml" value="0.22592592592592592" />
+        <entry key="..\:/android/movie/app/src/main/res/layout/layout_tv_shows_item.xml" value="0.22592592592592592" />
       </map>
     </option>
   </component>

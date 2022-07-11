@@ -6,4 +6,9 @@
     <string name="settings">Settings</string>
     <string name="movie_poster_content_desc">Movie Poster</string>
     <string name="label_overview">Overview:</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="delete_all_favorites">Delete All Favorites</string>
+    <string name="language">Language</string>
+    <string name="share_apk">Share Apk</string>
+    <string name="theme">Theme</string>
 </resources>

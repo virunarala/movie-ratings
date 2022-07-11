@@ -7,29 +7,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.batofgotham.moviereviews.data.model.TvShow
 import com.batofgotham.moviereviews.databinding.LayoutTvShowsItemBinding
+import com.batofgotham.moviereviews.utils.BottomDialogInterfaceTv
 import com.bumptech.glide.Glide
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200"
 
-class TvShowsAdapter(private val listener: TvShowsViewHolder.OnClickListener) :
+class TvShowsAdapter(private val bottomDialogInterface: BottomDialogInterfaceTv) :
     PagingDataAdapter<TvShow, TvShowsViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowsViewHolder {
+
         return TvShowsViewHolder(
             LayoutTvShowsItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), bottomDialogInterface
         )
     }
 
     override fun onBindViewHolder(holder: TvShowsViewHolder, position: Int) {
         val item = getItem(position)
-        if (item != null)
-            holder.itemView.setOnClickListener {
-                listener.onClick(item)
-            }
         if (item != null)
             holder.bind(item)
     }
@@ -45,9 +43,17 @@ class TvShowsAdapter(private val listener: TvShowsViewHolder.OnClickListener) :
     }
 }
 
-class TvShowsViewHolder(private val binding: LayoutTvShowsItemBinding) :
+class TvShowsViewHolder(
+    private val binding: LayoutTvShowsItemBinding,
+    private val bottomDialogInterface: BottomDialogInterfaceTv
+) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(tvShow: TvShow) {
+
+        binding.tvContainerView.setOnClickListener {
+            bottomDialogInterface.send(tvShow)
+        }
+
         binding.titleTextView.text = tvShow.name
         val imageView = binding.posterImageView
         val context = binding.root.context
@@ -57,10 +63,6 @@ class TvShowsViewHolder(private val binding: LayoutTvShowsItemBinding) :
         Glide.with(binding.root)
             .load(posterUrl)
             .into(imageView)
-    }
-
-    interface OnClickListener {
-        fun onClick(tvShow: TvShow)
     }
 
 }
