@@ -11,9 +11,6 @@
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_choiceChipsFragment"
-            app:destination="@id/choiceChipsFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_detailScreenFragment"
             app:destination="@id/detailScreenFragment" />
     </fragment>
@@ -27,11 +24,6 @@
         android:name="com.batofgotham.moviereviews.ui.bottomsheetnav.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
-    <dialog
-        android:id="@+id/choiceChipsFragment"
-        android:name="com.batofgotham.moviereviews.ui.ChoiceChipsFragment"
-        android:label="fragment_choice_chips"
-        tools:layout="@layout/fragment_choice_chips" />
     <fragment
         android:id="@+id/movieFragment"
         android:name="com.batofgotham.moviereviews.ui.movie.MovieFragment"
