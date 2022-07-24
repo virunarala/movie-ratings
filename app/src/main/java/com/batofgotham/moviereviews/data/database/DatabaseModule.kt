@@ -30,4 +30,10 @@ object DatabaseModule {
     fun provideMovieDao(movieDatabase: MovieDatabase): MovieDao{
         return movieDatabase.movieDao
     }
+
+    @Singleton
+    @Provides
+    fun provideRemoteKeyDao(movieDatabase: MovieDatabase): RemoteKeyDao{
+        return movieDatabase.remoteKeyDao
+    }
 }

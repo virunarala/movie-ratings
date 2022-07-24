@@ -11,4 +11,5 @@
     <string name="language">Language</string>
     <string name="share_apk">Share Apk</string>
     <string name="theme">Theme</string>
+    <string name="network_error_text">NO INTERNET</string>
 </resources>

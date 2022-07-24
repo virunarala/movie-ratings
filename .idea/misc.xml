@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/viru/AndroidStudioProjects/MovieRatings/app/src/main/res/drawable/ic_baseline_network_off_24.xml" value="0.145" />
         <entry key="..\:/Users/viru/AndroidStudioProjects/MovieRatings/app/src/main/res/layout/fragment_movie.xml" value="0.259375" />
         <entry key="..\:/Users/viru/AndroidStudioProjects/MovieReviews/app/src/main/res/layout/activity_main.xml" value="0.259375" />
         <entry key="..\:/Users/viru/AndroidStudioProjects/MovieReviews/app/src/main/res/layout/fragment_detail_screen.xml" value="0.264" />

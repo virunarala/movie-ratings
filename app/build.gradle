@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.batofgotham.moviereviews"
         minSdk 21
-        targetSdk 31
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -78,8 +78,11 @@ dependencies {
 
     //Room
     implementation 'androidx.room:room-runtime:2.4.2'
+    annotationProcessor "androidx.room:room-compiler:2.4.2"
     kapt 'androidx.room:room-compiler:2.4.2'
     implementation 'androidx.room:room-ktx:2.4.2'
+    //Room with Paging
+    implementation "androidx.room:room-paging:2.4.2"
 
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"

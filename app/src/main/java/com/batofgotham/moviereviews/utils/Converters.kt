@@ -19,6 +19,15 @@ class Converters {
         Log.i(TAG,string)
         val strWithoutBraces = string.substring(1,string.length - 1)
         Log.i(TAG,strWithoutBraces)
-        return strWithoutBraces.split(',').map { Integer.parseInt(it.trim()) }
+        return try{
+            strWithoutBraces.split(',').map { Integer.parseInt(it.trim()) }
+        }
+        /**
+         * If the string is empty, return an empty list
+         */
+        catch (e: NumberFormatException){
+            listOf()
+        }
+
     }
 }

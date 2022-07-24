@@ -2,22 +2,21 @@ package com.batofgotham.moviereviews.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
+import androidx.paging.*
 import com.batofgotham.moviereviews.data.database.MovieDao
-import com.batofgotham.moviereviews.data.model.Movie
+import com.batofgotham.moviereviews.data.model.MovieEntity
+import com.batofgotham.moviereviews.data.model.MovieRemote
 import com.batofgotham.moviereviews.data.model.MovieNetworkResponse
-import com.batofgotham.moviereviews.data.paging.MoviePagingSource
+import com.batofgotham.moviereviews.data.paging.MovieRemoteMediator
 import com.batofgotham.moviereviews.data.remote.movies.ApiService
 import javax.inject.Inject
 
-class MovieRepo @Inject constructor(private val apiService: ApiService,private val movieDao: MovieDao) {
+class MovieRepo @Inject constructor(private val apiService: ApiService,private val movieDao: MovieDao,
+private val movieRemoteMediator: MovieRemoteMediator) {
 
     private val TAG = MovieRepo::class.java.simpleName
 
-    private suspend fun getMoviesFromNetwork(): List<Movie>{
+    private suspend fun getMoviesFromNetwork(): List<MovieRemote>{
         val result = apiService.getMoviesApiResponse(5).results
         Log.i(TAG,result.toString())
         return result
@@ -27,43 +26,35 @@ class MovieRepo @Inject constructor(private val apiService: ApiService,private v
         return apiService.getMoviesApiResponse(key)
     }
 
-    private suspend fun getMoviesFromDb(): List<Movie>{
+    private suspend fun getMoviesFromDb(): List<MovieEntity>{
         val result = movieDao.getAllMovies()
         Log.i(TAG,result.toString())
         return result
     }
 
-    private suspend fun addMoviesToDb(movies: List<Movie>): List<Long> {
-        val rowIds = movieDao.insertMovies(movies)
+    private suspend fun addMoviesToDb(movieEntities: List<MovieEntity>): List<Long> {
+        val rowIds = movieDao.insertMovies(movieEntities)
         return rowIds
     }
 
-    fun loadMovies(): LiveData<PagingData<Movie>>{
-        /**
-         * Try to fetch from db
-         */
-//        var resultFromDb = getMoviesFromDb()
-        var resultFromDb = listOf<Movie>()
+    @OptIn(ExperimentalPagingApi::class)
+    fun loadMovies(): LiveData<PagingData<MovieEntity>>{
 
         /**
          * Specifies the number of items to load in a single page
          */
-        val pageSize = 30
-        /**
-         * If data not available in db, fetch from internet, cache it in db and return the result
-         */
-//        if(resultFromDb.isEmpty()){
-//            val resultFromNetwork = getMoviesNetworkResponse(5)
-//            addMoviesToDb(resultFromNetwork.results)
-//            resultFromDb = movieDao.getAllMovies()
-//        }
-//
-//        return resultFromDb
+        val pageSize = 20
 
-        return Pager(
-            PagingConfig(pageSize, enablePlaceholders = true)) {
-                MoviePagingSource(this)
-            }.liveData
+
+        val pager = Pager(
+            config = PagingConfig(pageSize = pageSize, enablePlaceholders = true),
+            remoteMediator = movieRemoteMediator
+        ) {
+            movieDao.pagingSource()
+        }
+        Log.i("PagingFlow","8. Pager: $pager")
+        return pager.liveData
+
 
     }
 }

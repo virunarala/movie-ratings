@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 import com.batofgotham.moviereviews.utils.Constants
 import com.squareup.moshi.Json
 
-@Entity(tableName = Constants.TABLE_NAME_MOVIE)
-data class Movie(
+
+data class MovieRemote(
 
     @Json(name="poster_path")
     val posterPath: String? = null,

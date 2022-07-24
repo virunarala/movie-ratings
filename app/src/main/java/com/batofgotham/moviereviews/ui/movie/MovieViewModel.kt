@@ -3,9 +3,9 @@ package com.batofgotham.moviereviews.ui.movie
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.batofgotham.moviereviews.data.model.Configuration
-import com.batofgotham.moviereviews.data.model.Movie
+import com.batofgotham.moviereviews.data.model.MovieEntity
+import com.batofgotham.moviereviews.data.model.MovieRemote
 import com.batofgotham.moviereviews.repository.ConfigRepo
 import com.batofgotham.moviereviews.repository.MovieRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,9 +24,12 @@ class MovieViewModel @Inject constructor(
     val apiConfig: LiveData<Configuration>
         get() = _apiConfig
 
-    fun getMovies(): LiveData<PagingData<Movie>>{
-        return movieRepo.loadMovies().cachedIn(viewModelScope)
+    fun getMovies(): LiveData<PagingData<MovieEntity>>{
+        val movies = movieRepo.loadMovies()
+        Log.i("PagingFlow","9. ${movies.value}")
+        return movies
     }
+
 
 
     private fun getApiConfig() {

@@ -1,5 +1,8 @@
 package com.batofgotham.moviereviews.ui.movie
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +14,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.batofgotham.moviereviews.R
-import com.batofgotham.moviereviews.data.model.Movie
+import com.batofgotham.moviereviews.data.model.MovieEntity
 import com.batofgotham.moviereviews.databinding.FragmentMovieBinding
 import com.batofgotham.moviereviews.utils.BottomDialogInterface
 import com.batofgotham.moviereviews.utils.Utils
@@ -36,6 +39,7 @@ class MovieFragment : Fragment(), BottomDialogInterface {
     private lateinit var detailBottomSheet: ViewGroup
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ViewGroup>
 
+
     private val viewModel: MovieViewModel by viewModels()
 
 
@@ -46,26 +50,47 @@ class MovieFragment : Fragment(), BottomDialogInterface {
 
         _binding = FragmentMovieBinding.inflate(inflater,container,false)
 
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        setupDetailBottomSheet()
+        if(!isConnectedToNetwork())
+            showNetworkError()
+
+        else{
+            setupDetailBottomSheet()
 
 
-        val recyclerView = binding.moviesRecyclerView
-        val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-        gridLayoutManager.spanCount = 3
+            val recyclerView = binding.moviesRecyclerView
+            val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
+            gridLayoutManager.spanCount = 3
 
-        val adapter = MovieAdapter(this)
-        recyclerView.adapter = adapter
+            val adapter = MovieAdapter(this)
+            recyclerView.adapter = adapter
 
-        lifecycleScope.launch {
-            viewModel.getMovies().asFlow().collectLatest {
-                adapter.submitData(it)
+            lifecycleScope.launch {
+                viewModel.getMovies().asFlow().collectLatest {
+                    adapter.submitData(it)
+                }
             }
         }
+
+
+    }
+
+    private fun showNetworkError(){
+        binding.moviesRecyclerView.visibility = View.GONE
+        binding.detailBottomSheetContainer.visibility = View.GONE
+        binding.networkErrorView.visibility = View.VISIBLE
+    }
+
+    private fun isConnectedToNetwork(): Boolean {
+        val connectivityManager = requireContext().getSystemService(ConnectivityManager::class.java)
+        val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+
+        return networkInfo?.isConnected == true
     }
 
     private fun setupDetailBottomSheet(){
@@ -99,12 +124,12 @@ class MovieFragment : Fragment(), BottomDialogInterface {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    override fun onMovieSelected(movie: Movie?) {
+    override fun onMovieSelected(movie: MovieEntity?) {
         bottomSheetBehavior.state=BottomSheetBehavior.STATE_COLLAPSED
         loadBottomDialog(movie)
     }
 
-    private fun loadBottomDialog(movie: Movie?) {
+    private fun loadBottomDialog(movie: MovieEntity?) {
         movie?.apply {
             binding.titleTextView.text = title
             binding.posterImageView.setImageResource(R.drawable.ic_launcher_background)

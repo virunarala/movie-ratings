@@ -1,11 +1,10 @@
 package com.batofgotham.moviereviews.data.model
 
-import com.batofgotham.moviereviews.data.model.Movie
 import com.squareup.moshi.Json
 
 data class MovieNetworkResponse(
     val page: Int,
-    val results: List<Movie>,
+    val results: List<MovieRemote>,
 
     @Json(name="total_results")
     val totalResults: Int,

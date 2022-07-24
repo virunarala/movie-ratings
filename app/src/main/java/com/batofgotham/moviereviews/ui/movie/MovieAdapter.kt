@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.batofgotham.moviereviews.data.model.Movie
+import com.batofgotham.moviereviews.data.model.MovieEntity
+import com.batofgotham.moviereviews.data.model.MovieRemote
 import com.batofgotham.moviereviews.databinding.LayoutMovieItemBinding
 import com.batofgotham.moviereviews.utils.BottomDialogInterface
 import com.bumptech.glide.Glide
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200"
 
-class MovieAdapter(private val bottomDialogInterface: BottomDialogInterface) : PagingDataAdapter<Movie, MovieViewHolder>(
+class MovieAdapter(private val bottomDialogInterface: BottomDialogInterface) : PagingDataAdapter<MovieEntity, MovieViewHolder>(
     DiffCallback
 ) {
 
@@ -30,12 +31,12 @@ class MovieAdapter(private val bottomDialogInterface: BottomDialogInterface) : P
         holder.bind(item)
     }
 
-    companion object DiffCallback: DiffUtil.ItemCallback<Movie>(){
-        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+    companion object DiffCallback: DiffUtil.ItemCallback<MovieEntity>(){
+        override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
             return oldItem == newItem
         }
     }
@@ -44,7 +45,7 @@ class MovieAdapter(private val bottomDialogInterface: BottomDialogInterface) : P
 
 class MovieViewHolder(private val binding: LayoutMovieItemBinding, private val bottomDialogInterface: BottomDialogInterface): RecyclerView.ViewHolder(binding.root){
 
-    fun bind(movie: Movie?){
+    fun bind(movie: MovieEntity?){
 
         binding.movieContainerView.setOnClickListener {
             bottomDialogInterface.onMovieSelected(movie)
