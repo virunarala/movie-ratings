@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/poster_image_view"
         android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:contentDescription="@string/movie_poster_content_desc" />
 
     <TextView

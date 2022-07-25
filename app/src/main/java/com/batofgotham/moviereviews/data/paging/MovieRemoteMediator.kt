@@ -1,5 +1,6 @@
 package com.batofgotham.moviereviews.data.paging
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -22,6 +23,8 @@ class MovieRemoteMediator @Inject constructor(
     val movieDao = database.movieDao
     val remoteKeyDao = database.remoteKeyDao
 
+    private val TAG = "PagingFlow"
+
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -33,7 +36,7 @@ class MovieRemoteMediator @Inject constructor(
 
             val currentPage = when(loadType){
                 LoadType.REFRESH -> {
-
+                    Log.i(TAG,"Refresh called")
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                     remoteKeys?.nextKey?.minus(1) ?: 1
                 }
@@ -53,7 +56,16 @@ class MovieRemoteMediator @Inject constructor(
                 }
             }
 
+            database.withTransaction {
+                if(loadType == LoadType.REFRESH){
+                    Log.i(TAG,"Database clear called")
+                    movieDao.clearAllMovies()
+                    remoteKeyDao.clearAll()
+                }
+            }
+
             val response = network.getMoviesApiResponse(currentPage)
+            Log.i(TAG,"Response received: $response")
             val results = response.results
 
 
@@ -63,14 +75,9 @@ class MovieRemoteMediator @Inject constructor(
 
 
             database.withTransaction {
-                if(loadType == LoadType.REFRESH){
-                    movieDao.clearAllMovies()
-                    remoteKeyDao.clearAll()
-                }
                 val movieEntities = results.map {
                     MovieEntity.fromRemote(it)
                 }
-
 
                 //If the table already contains 4 pages cached, flush the oldest page and cache the new page
                 if(movieDao.size()>80){

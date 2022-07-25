@@ -1,8 +1,5 @@
 package com.batofgotham.moviereviews.ui.movie
 
-import android.content.IntentFilter
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.batofgotham.moviereviews.R
 import com.batofgotham.moviereviews.data.model.MovieEntity
@@ -39,6 +37,8 @@ class MovieFragment : Fragment(), BottomDialogInterface {
     private lateinit var detailBottomSheet: ViewGroup
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ViewGroup>
 
+    private lateinit var pagingAdapter: MovieAdapter
+
 
     private val viewModel: MovieViewModel by viewModels()
 
@@ -50,69 +50,87 @@ class MovieFragment : Fragment(), BottomDialogInterface {
 
         _binding = FragmentMovieBinding.inflate(inflater,container,false)
 
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        if(!isConnectedToNetwork())
-            showNetworkError()
+        setupDetailBottomSheet()
 
-        else{
-            setupDetailBottomSheet()
+        val recyclerView = binding.moviesRecyclerView
+        val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
+        gridLayoutManager.spanCount = 3
 
+        pagingAdapter = MovieAdapter(this)
+        recyclerView.adapter = pagingAdapter
 
-            val recyclerView = binding.moviesRecyclerView
-            val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-            gridLayoutManager.spanCount = 3
+        // Activities can use lifecycleScope directly, but Fragments should instead use
+        // viewLifecycleOwner.lifecycleScope.
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getMovies().asFlow().collectLatest {
+                pagingAdapter.submitData(it)
+            }
 
-            val adapter = MovieAdapter(this)
-            recyclerView.adapter = adapter
+        }
 
-            lifecycleScope.launch {
-                viewModel.getMovies().asFlow().collectLatest {
-                    adapter.submitData(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            pagingAdapter.loadStateFlow.collectLatest { loadStates ->
+                Log.i(TAG,"Load State: ${loadStates.refresh}")
+                when(loadStates.refresh){
+                    is LoadState.Error -> showNetworkError()
+                    is LoadState.Loading -> {
+                        showProgressBar()
+                    }
+                    is LoadState.NotLoading -> {
+                        showData()
+                    }
                 }
             }
         }
 
+        binding.retryButton.setOnClickListener {
+            pagingAdapter.refresh()
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            pagingAdapter.refresh()
+        }
 
     }
 
     private fun showNetworkError(){
+        Log.i("MovieFragment","Show Network Error Called")
         binding.moviesRecyclerView.visibility = View.GONE
         binding.detailBottomSheetContainer.visibility = View.GONE
         binding.networkErrorView.visibility = View.VISIBLE
     }
 
-    private fun isConnectedToNetwork(): Boolean {
-        val connectivityManager = requireContext().getSystemService(ConnectivityManager::class.java)
-        val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+    private fun showProgressBar(){
+        binding.progressBar.visibility = View.VISIBLE
+        binding.moviesRecyclerView.visibility = View.GONE
+        binding.detailBottomSheetContainer.visibility = View.GONE
+    }
 
-        return networkInfo?.isConnected == true
+    private fun showData(){
+        binding.moviesRecyclerView.visibility = View.VISIBLE
+        binding.detailBottomSheetContainer.visibility = View.VISIBLE
+        binding.networkErrorView.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.swipeRefresh.isRefreshing = false
     }
 
     private fun setupDetailBottomSheet(){
-
         detailBottomSheet = binding.detailBottomSheetContainer
-
         bottomSheetBehavior = BottomSheetBehavior.from(detailBottomSheet)
-
-        Log.i(TAG,bottomSheetBehavior.state.toString())
-
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
-
         hideBottomSheet()
     }
 
     private val bottomSheetCallback = object: BottomSheetBehavior.BottomSheetCallback(){
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-            Log.i(TAG,newState.toString())
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            Log.i(TAG,"Sliding...")
         }
     }
 

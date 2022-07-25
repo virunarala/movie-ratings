@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.batofgotham.moviereviews.R
 import com.batofgotham.moviereviews.data.model.MovieEntity
 import com.batofgotham.moviereviews.data.model.MovieRemote
 import com.batofgotham.moviereviews.databinding.LayoutMovieItemBinding
@@ -57,9 +58,10 @@ class MovieViewHolder(private val binding: LayoutMovieItemBinding, private val b
 
         val posterUrl = IMAGE_BASE_URL + movie?.posterPath
 
-        //(TODO) Add a placeholder image for when the poster is not available and to show while loading a image
+
         Glide.with(binding.root)
             .load(posterUrl)
+            .placeholder(R.drawable.placeholder_image_36)
             .into(imageView)
     }
 }
