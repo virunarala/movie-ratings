@@ -24,6 +24,7 @@ class MovieRemoteMediator @Inject constructor(
     val remoteKeyDao = database.remoteKeyDao
 
     private val TAG = "PagingFlow"
+    private val LTAG = "LoadType"
 
 
     override suspend fun initialize(): InitializeAction {
@@ -36,12 +37,13 @@ class MovieRemoteMediator @Inject constructor(
 
             val currentPage = when(loadType){
                 LoadType.REFRESH -> {
-                    Log.i(TAG,"Refresh called")
+                    Log.i(LTAG,"Refresh called")
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                     remoteKeys?.nextKey?.minus(1) ?: 1
                 }
 
                 LoadType.PREPEND -> {
+                    Log.i(LTAG,"Prepend called")
                     val remoteKeys = getRemoteKeyForFirstItem(state)
                     val prevPage = remoteKeys?.prevKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys!=null)
 
@@ -49,6 +51,7 @@ class MovieRemoteMediator @Inject constructor(
                 }
 
                 LoadType.APPEND -> {
+                    Log.i(LTAG,"Append called")
                     val remoteKeys = getRemoteKeyForLastItem(state)
                     val nextPage = remoteKeys?.nextKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys!=null)
 
@@ -78,14 +81,6 @@ class MovieRemoteMediator @Inject constructor(
                 val movieEntities = results.map {
                     MovieEntity.fromRemote(it)
                 }
-
-                //If the table already contains 4 pages cached, flush the oldest page and cache the new page
-                if(movieDao.size()>80){
-                    val flushSize: Int = 20
-                    movieDao.deleteMoviesFromTop(flushSize)
-                    remoteKeyDao.deleteRemoteKeysFromTop(flushSize)
-                }
-
 
                 val remoteIds = movieDao.insertMovies(movieEntities)
 

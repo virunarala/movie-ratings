@@ -57,8 +57,9 @@ abstract interface MovieDao {
     suspend fun deleteMoviesFromTop(numberOfMovies: Int)
 
     /**
-     * Resets the auto-incremented remoteId field of RemoteKey table to 1.
+     * Deletes the bottom n items from the table
      */
-//    @Query("DELETE FROM sqlite_sequence WHERE NAME = ${Constants.TABLE_NAME_REMOTE_KEY}")
-//    suspend fun resetRemoteId()
+    @Query("DELETE FROM ${Constants.TABLE_NAME_MOVIE} WHERE remoteId IN (SELECT remoteId from ${Constants.TABLE_NAME_MOVIE} ORDER BY remoteId DESC LIMIT :numberOfMovies)")
+    suspend fun deleteMoviesFromBottom(numberOfMovies: Int)
+
 }
